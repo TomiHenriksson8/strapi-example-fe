@@ -1,56 +1,24 @@
 import { useEffect, useState } from "react";
 import { useProducts } from "../hooks/apiHooks";
-import { Product } from "../types/DBTypes"
-
-interface ProductArray {
-    products: Product[];
-}
-
-/* const mockData: ProductArray = {
-    products: [
-        {
-            id: 1,
-            product_name: 'Product 1',
-            description: 'Description 1',
-            price: 100,
-        },
-        {
-            id: 2,
-            product_name: 'Product 2',
-            description: 'Description 2',
-            price: 200,
-        },
-        {
-            id: 3,
-            product_name: 'Product 3',
-            description: 'Description 3',
-            price: 300,
-        },
-    ],
-}
- */
+import { Product } from "../types/DBTypes";
 
 const ProductList = () => {
-  
     const { getProducts } = useProducts();
-
     const [products, setProducts] = useState<Product[]>([]);
 
     const getAllProducts = async () => {
         try {
-            const response = await getProducts();
-            console.log('products', response);
-            setProducts(response);
+            const products = await getProducts(); // Already returns the structured product list
+            setProducts(products);
         } catch (error) {
-            console.log('error', error);
+            console.error('Error:', error);
         }
     };
-
 
     useEffect(() => {
         getAllProducts();
     }, []);
-  
+
     return (
         <div className="flex flex-wrap justify-center gap-4 m-4">
             {products.map((product) => (
@@ -71,4 +39,4 @@ const ProductList = () => {
     );
 }
 
-export default ProductList
+export default ProductList;

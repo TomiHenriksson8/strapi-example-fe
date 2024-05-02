@@ -4,11 +4,15 @@ import { Product } from "../types/DBTypes";
 
 
 const useProducts = () => {
-    const getProducts = async () => {
-        return await fetchData<Product[]>(
-            process.env.EXAMPLE_STRAPI_URL + '/products'
-        )
-    }
+    const getProducts = async (): Promise<Product[]> => {
+        const response = await fetchData<{ data: { id: number, attributes: any }[] }>(
+            `http://localhost:1337/api/products`
+        );
+        return response.data.map(({ id, attributes }) => ({
+            id,
+            ...attributes 
+        }));
+    };
     return { getProducts }
 };
 
